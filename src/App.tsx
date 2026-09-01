@@ -9,6 +9,7 @@ import { ArchitectureInspector } from './components/ArchitectureInspector';
 import { BenchmarkTester } from './components/BenchmarkTester';
 import { CodeExporter } from './components/CodeExporter';
 import { LiveConsole } from './components/LiveConsole';
+import { KnowledgeGuide } from './components/KnowledgeGuide';
 
 export default function App() {
   const [currentModel, setCurrentModel] = useState<ModelProfile>(
@@ -114,6 +115,10 @@ export default function App() {
               config={config}
               isEngineRunning={isEngineRunning}
             />
+          )}
+
+          {activeTab === 'knowledge' && (
+            <KnowledgeGuide />
           )}
         </main>
       </div>

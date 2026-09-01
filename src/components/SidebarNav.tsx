@@ -1,7 +1,7 @@
 import React from 'react';
-import { Layers, Activity, Cpu, ShieldAlert, FileCode2, Terminal, Sliders } from 'lucide-react';
+import { Layers, Activity, Cpu, ShieldAlert, FileCode2, Terminal, Sliders, BookOpen } from 'lucide-react';
 
-export type NavTabId = 'geometry' | 'autotune' | 'models' | 'benchmarks' | 'exporter' | 'console';
+export type NavTabId = 'geometry' | 'autotune' | 'models' | 'benchmarks' | 'exporter' | 'console' | 'knowledge';
 
 interface SidebarNavProps {
   activeTab: NavTabId;
@@ -16,7 +16,8 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({ activeTab, onSelectTab, 
     { id: 'models', label: 'SOTA Multi-Architecture Registry', icon: <Cpu className="w-5 h-5" /> },
     { id: 'benchmarks', label: 'Verification & Safety Benchmarks', icon: <ShieldAlert className="w-5 h-5" /> },
     { id: 'exporter', label: '1-Click Python / Colab Script Exporter', icon: <FileCode2 className="w-5 h-5" />, badge: '.ipynb' },
-    { id: 'console', label: 'Real-Time Surgery Telemetry Console', icon: <Terminal className="w-5 h-5" /> }
+    { id: 'console', label: 'Real-Time Surgery Telemetry Console', icon: <Terminal className="w-5 h-5" /> },
+    { id: 'knowledge', label: 'Knowledge Base & AI Blueprint (Hướng Dẫn)', icon: <BookOpen className="w-5 h-5" />, badge: 'Guide' }
   ];
 
   return (

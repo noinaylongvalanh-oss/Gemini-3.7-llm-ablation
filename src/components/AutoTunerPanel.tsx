@@ -20,6 +20,7 @@ export const AutoTunerPanel: React.FC<AutoTunerPanelProps> = ({
   isEngineRunning,
   setIsEngineRunning
 }) => {
+  const [showLaymanGuide, setShowLaymanGuide] = useState<boolean>(false);
   const [currentEpoch, setCurrentEpoch] = useState<number>(0);
   const [totalEpochs, setTotalEpochs] = useState<number>(config.epochs || 16);
   const [epochHistory, setEpochHistory] = useState<ParetoEpochRecord[]>([]);
@@ -167,6 +168,14 @@ export const AutoTunerPanel: React.FC<AutoTunerPanelProps> = ({
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={() => setShowLaymanGuide(!showLaymanGuide)}
+            className="text-[10px] px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/60 transition-all font-mono flex items-center gap-1.5"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            {showLaymanGuide ? 'Ẩn Hướng Dẫn' : '💡 Giải Thích Auto-Tuner'}
+          </button>
+
           {!isEngineRunning ? (
             <button
               onClick={handleStartTuning}
@@ -194,6 +203,20 @@ export const AutoTunerPanel: React.FC<AutoTunerPanelProps> = ({
           </button>
         </div>
       </div>
+
+      {showLaymanGuide && (
+        <div className="p-4 rounded-xl bg-slate-900/60 border border-cyan-500/30 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+          <div className="text-cyan-300 font-bold flex items-center gap-2">
+            <Zap className="w-4 h-4 text-amber-400" />
+            <span>💡 Cơ chế hoạt động của Auto-Tuning Engine (Dành Cho Người Dùng):</span>
+          </div>
+          <p className="text-[11px] leading-relaxed text-slate-300">
+            • <strong>Vấn đề thực tế:</strong> Chỉnh $\alpha$ quá yếu thì AI vẫn từ chối trả lời; chỉnh $\alpha$ quá mạnh thì AI có thể bị suy giảm khả năng làm toán.<br />
+            • <strong>Giải pháp Auto-Tuner:</strong> Hệ thống tự động giả lập quét hàng loạt giá trị tầng và hệ số $\alpha$. Sau đó vẽ nên đồ thị <strong>Pareto Frontier</strong> để tìm ra cấu hình "điểm vàng": Tỷ lệ từ chối = 0% mà độ thông minh MMLU vẫn đạt &gt;99.9%.<br />
+            • <strong>Cách dùng:</strong> Chỉ cần nhấn nút <strong>"Run Auto-Loop Sweep"</strong>, đợi vài giây sau đó nhấn <strong>"Apply Optimal Hyperparameters"</strong>!
+          </p>
+        </div>
+      )}
 
       {/* Strategy Selector Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">

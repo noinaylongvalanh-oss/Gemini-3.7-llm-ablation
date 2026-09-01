@@ -12,6 +12,7 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
   currentModel,
   config
 }) => {
+  const [showLaymanGuide, setShowLaymanGuide] = useState<boolean>(false);
   const [activeExportFormat, setActiveExportFormat] = useState<'python' | 'notebook'>('python');
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
@@ -62,11 +63,19 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
 
         <div className="flex items-center gap-3 shrink-0">
           <button
+            onClick={() => setShowLaymanGuide(!showLaymanGuide)}
+            className="text-[10px] px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/60 transition-all font-mono flex items-center gap-1.5 shrink-0"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            {showLaymanGuide ? 'Ẩn Hướng Dẫn' : '💡 Cách Chạy Colab'}
+          </button>
+
+          <button
             onClick={handleCopy}
             className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-white/10 font-mono text-xs font-semibold transition-all"
           >
             {isCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-            {isCopied ? 'Copied to Clipboard!' : 'Copy Code'}
+            {isCopied ? 'Copied!' : 'Copy Code'}
           </button>
 
           <button
@@ -74,10 +83,24 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
             className="flex items-center gap-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)]"
           >
             <Download className="w-4 h-4" />
-            Download {activeExportFormat === 'python' ? '.py Script' : '.ipynb Notebook'}
+            Download {activeExportFormat === 'python' ? '.py' : '.ipynb'}
           </button>
         </div>
       </div>
+
+      {showLaymanGuide && (
+        <div className="p-4 rounded-xl bg-slate-900/60 border border-cyan-500/30 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+          <div className="text-cyan-300 font-bold flex items-center gap-2">
+            <FileCode2 className="w-4 h-4 text-amber-400" />
+            <span>💡 Hướng Dẫn 3 Bước Thực Thi Dành Cho Người Không Chuyên:</span>
+          </div>
+          <p className="text-[11px] leading-relaxed text-slate-300">
+            1. Chọn tab <strong>"Google Colab / Kaggle Notebook (.ipynb)"</strong> và nhấn nút <strong>Download .ipynb</strong>.<br />
+            2. Mở trình duyệt vào <code>colab.research.google.com</code> ⟹ Chọn tab <strong>Tải lên (Upload)</strong> ⟹ Chọn file vừa tải về.<br />
+            3. Chọn menu <strong>Thời lượng chạy ⟹ Đổi loại thời lượng ⟹ T4 GPU (Miễn phí)</strong> và bấm <strong>Chạy tất cả (Ctrl + F9)</strong>. Quá trình xử lý sẽ tự hoàn tất trong ~30 giây!
+          </p>
+        </div>
+      )}
 
       {/* Format Switcher & Info Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-3">

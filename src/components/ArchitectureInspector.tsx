@@ -12,6 +12,7 @@ export const ArchitectureInspector: React.FC<ArchitectureInspectorProps> = ({
   currentModel,
   onSelectModel
 }) => {
+  const [showLaymanGuide, setShowLaymanGuide] = useState<boolean>(false);
   const [activeSuiteFilter, setActiveSuiteFilter] = useState<ArchitectureSuite | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -50,17 +51,40 @@ export const ArchitectureInspector: React.FC<ArchitectureInspectorProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2 bg-slate-950/80 px-3 py-2 rounded-lg border border-white/10 w-full md:w-72">
-          <Search className="w-4 h-4 text-slate-500" />
-          <input
-            type="text"
-            placeholder="Search model, repo, architecture..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-transparent border-none text-xs font-mono text-slate-200 placeholder:text-slate-600 focus:outline-none w-full"
-          />
+        <div className="flex items-center gap-3 w-full md:w-auto shrink-0">
+          <button
+            onClick={() => setShowLaymanGuide(!showLaymanGuide)}
+            className="text-[10px] px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/60 transition-all font-mono flex items-center gap-1.5 shrink-0"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            {showLaymanGuide ? 'Ẩn Hướng Dẫn' : '💡 Giải Thích Tensor'}
+          </button>
+
+          <div className="flex items-center gap-2 bg-slate-950/80 px-3 py-2 rounded-lg border border-white/10 w-full md:w-64">
+            <Search className="w-4 h-4 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Search model, repo..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-transparent border-none text-xs font-mono text-slate-200 placeholder:text-slate-600 focus:outline-none w-full"
+            />
+          </div>
         </div>
       </div>
+
+      {showLaymanGuide && (
+        <div className="p-4 rounded-xl bg-slate-900/60 border border-cyan-500/30 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+          <div className="text-cyan-300 font-bold flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-cyan-400" />
+            <span>💡 Giải Thích Về Đường Dẫn Tensor & Bộ Khóa Bảo Vệ (Tensor Routing & Guards):</span>
+          </div>
+          <p className="text-[11px] leading-relaxed text-slate-300">
+            • <strong>Tensor Mục Tiêu (Màu Xanh - Surgery Target):</strong> Chủ yếu là <code>mlp.down_proj.weight</code> hoặc <code>o_proj.weight</code>. Đây là nơi AI "ghi" câu từ phản hồi. Chúng ta chỉ can thiệp vào các tensor này để loại bỏ phản xạ từ chối.<br />
+            • <strong>Tensor Bị Cấm Can Thiệp (Màu Đỏ - Guarded):</strong> Bao gồm Router của mạng MoE (<code>router.gate</code>) và bộ xử lý hình ảnh (<code>vision_model / mm_projector</code>). Nếu tác động vào đây, mạng nơ-ron sẽ bị loạn điều hướng và hỏng tính năng đa phương thức!
+          </p>
+        </div>
+      )}
 
       {/* Suite Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-white/10">

@@ -15,6 +15,7 @@ export const GeometryVisualizer: React.FC<GeometryVisualizerProps> = ({
   config,
   onChangeConfig
 }) => {
+  const [showLaymanGuide, setShowLaymanGuide] = useState<boolean>(false);
   const [selectedLayerForInspect, setSelectedLayerForInspect] = useState<number>(
     Math.floor((config.layerRange[0] + config.layerRange[1]) / 2)
   );
@@ -73,10 +74,33 @@ export const GeometryVisualizer: React.FC<GeometryVisualizerProps> = ({
                 Frobenius Norm-Preserving Orthogonal Subspace Projector
               </span>
             </div>
-            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 font-mono">
-              MARCHENKO-PASTUR INVARIANT
-            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowLaymanGuide(!showLaymanGuide)}
+                className="text-[10px] px-2.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/60 transition-all font-mono flex items-center gap-1"
+              >
+                <Sparkles className="w-3 h-3 text-amber-400" />
+                {showLaymanGuide ? 'Ẩn Giải Thích' : '💡 Giải Thích Cho Người Mới'}
+              </button>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 font-mono">
+                MARCHENKO-PASTUR INVARIANT
+              </span>
+            </div>
           </div>
+
+          {showLaymanGuide && (
+            <div className="p-3 my-2 rounded-lg bg-slate-950/90 border border-cyan-500/30 text-xs font-mono text-slate-300 space-y-1.5 animate-fadeIn">
+              <div className="text-emerald-400 font-bold flex items-center gap-1">
+                <span>💡 Tóm tắt cho người không chuyên:</span>
+              </div>
+              <p className="text-[11px] leading-relaxed text-slate-300">
+                • <strong>Chấm Đỏ (Harmful):</strong> Các câu hỏi nhạy cảm kích hoạt phản xạ từ chối của AI.<br />
+                • <strong>Chấm Xanh Lá (Benign):</strong> Câu hỏi bình thường, an toàn.<br />
+                • <strong>Chấm Xanh Lam (Math & Code):</strong> Tư duy logic, toán học, lập trình.<br />
+                • <strong>Phép Chiếu Trực Giao:</strong> Dịch chuyển các câu hỏi màu đỏ về vùng xanh mà không làm lệch không gian Toán/Code. Chuẩn Frobenius được giữ nguyên 100% giúp mô hình không bị suy giảm trí tuệ!
+              </p>
+            </div>
+          )}
 
           <div className="bg-slate-950/90 p-3 rounded-lg border border-white/10 font-mono text-xs text-cyan-300 overflow-x-auto my-2">
             <div className="text-slate-400 text-[10px] mb-1">// Mathematical Operator (Exact GPU Formulation):</div>

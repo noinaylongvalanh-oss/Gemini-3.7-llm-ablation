@@ -11,6 +11,7 @@ export const BenchmarkTester: React.FC<BenchmarkTesterProps> = ({
   currentModel,
   config
 }) => {
+  const [showLaymanGuide, setShowLaymanGuide] = useState<boolean>(false);
   const [customPromptInput, setCustomPromptInput] = useState<string>('');
   const [isEvaluating, setIsEvaluating] = useState<boolean>(false);
 
@@ -89,21 +90,44 @@ export const BenchmarkTester: React.FC<BenchmarkTesterProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-mono">
-          <div className="p-2.5 bg-slate-950/80 rounded-lg border border-emerald-500/30 text-center">
-            <span className="text-[10px] text-slate-500 block">MMLU RETENTION</span>
-            <span className="text-emerald-400 font-bold">99.98%</span>
-          </div>
-          <div className="p-2.5 bg-slate-950/80 rounded-lg border border-cyan-500/30 text-center">
-            <span className="text-[10px] text-slate-500 block">GSM8K MATH</span>
-            <span className="text-cyan-300 font-bold">97.4%</span>
-          </div>
-          <div className="p-2.5 bg-slate-950/80 rounded-lg border border-rose-500/30 text-center">
-            <span className="text-[10px] text-slate-500 block">REFUSAL PROBABILITY</span>
-            <span className="text-rose-400 font-bold">0.00%</span>
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={() => setShowLaymanGuide(!showLaymanGuide)}
+            className="text-[10px] px-3 py-2 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/60 transition-all font-mono flex items-center gap-1.5 shrink-0"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            {showLaymanGuide ? 'Ẩn Hướng Dẫn' : '💡 Giải Thích Benchmark'}
+          </button>
+
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <div className="p-2 bg-slate-950/80 rounded-lg border border-emerald-500/30 text-center">
+              <span className="text-[9px] text-slate-500 block">MMLU RETENTION</span>
+              <span className="text-emerald-400 font-bold">99.98%</span>
+            </div>
+            <div className="p-2 bg-slate-950/80 rounded-lg border border-cyan-500/30 text-center">
+              <span className="text-[9px] text-slate-500 block">GSM8K MATH</span>
+              <span className="text-cyan-300 font-bold">97.4%</span>
+            </div>
+            <div className="p-2 bg-slate-950/80 rounded-lg border border-rose-500/30 text-center">
+              <span className="text-[9px] text-slate-500 block">REFUSAL RATE</span>
+              <span className="text-rose-400 font-bold">0.00%</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {showLaymanGuide && (
+        <div className="p-4 rounded-xl bg-slate-900/60 border border-cyan-500/30 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+          <div className="text-cyan-300 font-bold flex items-center gap-2">
+            <Brain className="w-4 h-4 text-cyan-400" />
+            <span>💡 Giải Thích Về Màn So Sánh Đối Chứng (Benchmark Probe Testing):</span>
+          </div>
+          <p className="text-[11px] leading-relaxed text-slate-300">
+            • <strong>Cột Trái (Stock Baseline):</strong> Mô hình gốc chưa phẫu thuật. Khi gặp câu hỏi kỹ thuật nhạy cảm, mô hình sẽ từ chối trả lời.<br />
+            • <strong>Cột Phải (Abliterated):</strong> Mô hình sau khi phẫu thuật chuẩn Frobenius. Mô hình trả lời đầy đủ, chi tiết và <strong>giữ nguyên các thẻ suy nghĩ nội tâm <code>&lt;think&gt; ... &lt;/think&gt;</code></strong> của DeepSeek-R1 / GPT-OSS mà không bị suy giảm khả năng logic!
+          </p>
+        </div>
+      )}
 
       {/* Test Case Selection Tabs */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
