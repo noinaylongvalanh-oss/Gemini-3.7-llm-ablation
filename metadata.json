@@ -1,0 +1,6 @@
+{
+  "name": "Abliteration Studio & SVD Hyperplane Geometry Workbench",
+  "description": "Industrial and research-grade platform for LLM Representation Engineering, Activation Hyperplane Geometry analysis, Auto-Iterative SVD Tuning, and Frobenius Norm-Preserving Weight Abliteration across SOTA architectures.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
