@@ -1,4 +1,12 @@
-export type ArchitectureSuite = 'gpt-oss' | 'gemma' | 'muse-nvidia' | 'reasoning-frontier';
+export type ArchitectureSuite = 
+  | 'gpt-oss' 
+  | 'deepseek' 
+  | 'qwen' 
+  | 'llama' 
+  | 'mistral' 
+  | 'gemma' 
+  | 'microsoft-phi' 
+  | 'muse-nvidia';
 
 export interface TargetTensorMapping {
   tensorName: string;
@@ -21,7 +29,7 @@ export interface ModelProfile {
   numKeyValueHeads?: number;
   vocabSize: number;
   contextLength: string;
-  architectureType: 'Dense Transformer' | 'Sparse MoE' | 'Multimodal Vision-Language' | 'Dual-State SWA Reasoning';
+  architectureType: 'Dense Transformer' | 'Sparse MoE' | 'Multimodal Vision-Language' | 'Dual-State SWA Reasoning' | 'Multi-Head Latent Attention (MLA)';
   specialFeatures: string[];
   recommendedAblationLayers: [number, number];
   defaultAlpha: number;
